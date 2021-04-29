@@ -113,6 +113,8 @@ namespace cpsc5031_hw4
         {
             int length1 = 0;
             int length2 = 0;
+
+            //create array sizes for even number
             if (CheckEvenNum(items.Length))
             {
                 length1 = items.Length / 2;
@@ -120,61 +122,70 @@ namespace cpsc5031_hw4
             }
             else
             {
+                // create array size for odd number
                 double tempLength = items.Length / 2.0;
                 int roundedUpNum = (int)Math.Ceiling(tempLength);
                 length1 = roundedUpNum;
                 length2 = (int)tempLength;
             }
 
+            //create temp array to merge
             int[] list1 = new int[length1];
             int[] list2 = new int[length2];
             int count = 0;
-            for (int i = 0; i <length1; i++)
+            int list1Count = 0;
+            int list2Count = 0;
+            //add items to first array
+            for (int i = 0; i < length1; i++)
             {
                 list1[i] = items[i];
+                count++;
+            }
+            //add items to second array
+            for (int i = 0; i < length2; i++)
+            {
+                list2[i] = items[count];
+                count++;
             }
 
-            for (int i = length2; i < items.Length; i++)
+            //merge and sort from two arrays
+            count = 0;
+            while (list1Count < length1 && list2Count < length2)
             {
-                if(count < length2)
+                if (list1[list1Count] <= list2[list2Count])
                 {
-                    list2[count] = items[i];
-                    count++;
-                }                
+                    items[count] = list1[list1Count];
+                    list1Count++;
+                }
+                else
+                {
+                    items[count] = list2[list2Count];
+                    list2Count++;
+                }
+                count++;
             }
 
-            if(length1 == length2)
+            //continue add any item left from two arrays after merged them. 
+            while (list1Count < length1)
             {
-                for (int i = 0; i < length2; i++)
-                {
-                    if (list1[i] <= list2[i])
-                    {
-                        items[i] = list1[i];
-                    }
-                    else
-                    {
-                        items[i] = list2[i];
-                    }
-                }
+                items[count] = list1[list1Count];
+                count++;
+                list1Count++;
             }
-            else
+
+            while (list2Count < length2)
             {
-                count = 0;
-                while(count < length1 && count < length2)
-                {
-                    if (list1[count] <= list2[count])
-                    {
-                        items[count] = list1[count];
-                    }
-                    else
-                    {
-                        items[count] = list2[count];
-                    }
-                    count++;
-                }
+                items[count] = list2[list2Count];
+                count++;
+                list2Count++;
             }
         }
 
+        /// <summary>
+        /// Function to check if number is an even number or odd number
+        /// </summary>
+        /// <param name="count">int number</param>
+        /// <returns>true/false</returns>
         public static bool CheckEvenNum(int count)
         {
             if (count % 2 == 0)
